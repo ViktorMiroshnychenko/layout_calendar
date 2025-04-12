@@ -70,7 +70,7 @@ $start-days: (mon, tue, wed, thu, fri, sat, sun);
 @each $day in $start-days {
   $index: list.index($start-days, $day) - 1;
 
-  .calendar--start-day-#{$day} .calendar__day--first {
+  .calendar--start-day-#{$day} .calendar__day:first-child {
     margin-left: calc(($day-size + $day-gap) * #{$index});
   }
 }
