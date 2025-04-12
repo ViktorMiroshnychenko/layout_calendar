@@ -1,7 +1,15 @@
+@use 'sass:list';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 $day-size: 100px;
 $day-gap: 1px;
 $border-size: 1px;
-$calendar-columns: 7;
+$cal-col: 7;
 $padding: 10px;
 $color-day: #eee;
 $color-hover: #ffbfcb;
@@ -22,11 +30,8 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: $day-gap;
-  width: calc(
-    ($day-size + $day-gap) * $calendar-columns - $day-gap + $padding * 4
-  );
+  width: calc($cal-col * $day-size + ($cal-col - 1) * $day-gap + 2 * $padding);
   padding: $padding;
-  box-sizing: border-box;
   position: relative;
   counter-reset: day;
 }
@@ -59,16 +64,18 @@ body {
   }
 }
 
-// Start day modifiers
-$start-days: (sun, mon, tue, wed, thu, fri, sat);
+// Зсув першого числа місяця (початок з понеділка)
+$start-days: (mon, tue, wed, thu, fri, sat, sun);
 
-@each $day, $index in $start-days {
-  .calendar--start-#{$day} .calendar__day:first-child {
+@each $day in $start-days {
+  $index: list.index($start-days, $day) - 1;
+
+  .calendar--start-day-#{$day} .calendar__day--first {
     margin-left: calc(($day-size + $day-gap) * #{$index});
   }
 }
 
-// Month length modifiers
+// Обмеження довжини місяця
 @for $i from 28 through 30 {
   .calendar--month-length-#{$i} .calendar__day:nth-child(n + #{$i + 1}) {
     display: none;
